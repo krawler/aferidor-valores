@@ -89,8 +89,7 @@ public class Login extends Application {
 		KeyCode keycode = e.getCode();
 		System.out.println(type + " key code: " + keycode.getName());
 		
-		if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {
-			//JOptionPane.showMessageDialog(null, "F1 foi pressionado", "Erro", JOptionPane.ERROR_MESSAGE);			 
+		if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {					 
 		    e.consume();
 		    selectNextNode(!e.isShiftDown(), (TextField) e.getSource());     
 		}

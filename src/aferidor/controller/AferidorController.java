@@ -46,14 +46,30 @@ public class AferidorController implements Initializable {
 	private Label lblMsgMaisUmaData;
 	@FXML
 	private Button btnConsultaValores;
+	
+	public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+	public static final String JDBC_URL = "jdbc:derby:C:\\Users\\Rafael.Ramos\\Documents\\workspace-sts-3.9.1.RELEASE\\aferidor-valores\\db\\consultas;create=true";
+	Connection conn = null;
 
 	@Override
 	public void initialize(URL url, ResourceBundle bundle) {
+		
 		lblMsgMaisUmaData.setVisible(false);
 		cmbMaisUmaData.setVisible(false);
 		dtpDataInicialConsulta.requestFocus();
 		
-		initListeners();
+		initListeners();		
+		
+		try {
+			Class.forName(DRIVER);
+			conn = DriverManager.getConnection(JDBC_URL);
+			
+		} catch (SQLException e) {			 
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {		
+			e.printStackTrace();
+		}
+		
 	}
 	
 	private void initListeners() {
@@ -66,13 +82,12 @@ public class AferidorController implements Initializable {
 		});
 	}
 	
-	private void testaConexaoBanco() {
+	private void testaConexaoBanco() {		
 		
-		Connection conn;
 		try {
-			conn = DriverManager.getConnection("jdbc:h2:~/aferidor", "sa", "onsoft");
-			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("select * from CONSULTA_TRANSACIONAL");
+			Statement stmt = conn.createStatement();
+			ResultSet results = stmt.executeQuery("select * from AFERIDOR.CONSULTAS");
+			
 		} catch (SQLException e) {			
 			e.printStackTrace();
 		}
