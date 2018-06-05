@@ -35,6 +35,11 @@ public class Consulta {
 	
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
-	}	
+	}
+	
+	@Override
+	public String toString() {		
+		return this.getId().toString() + " - " + this.getSqlConsulta() + " - " + this.getTipo();
+	}
 
 }

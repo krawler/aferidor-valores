@@ -1,0 +1,33 @@
+
+INSERT INTO AFERIDOR.CONSULTAS(ID, NOME, SQL_CONSULTA, TIPO_CONSULTA) VALUES(2, 'COMISSÃO NOTAS SAÍDA', 'select  p.nome, sum(nfc.vl_comissao) from nfsaida_comissao nfc inner join nfsaida nf on nf.codigo = nfc.idsaida and nf.idvendedor = nfc.idcolaborador and nf.idvendedor_loja = nfc.idcolaborador_loja inner join tipo_operacao op on op.codigo = nf.idoperacao and op.gera_comissao = -1  inner join pessoa_vendedor pv on pv.idpessoa = nfc.idcolaborador and pv.idloja = nfc.idcolaborador_loja inner join pessoa p on p.codigo = pv.idpessoa and p.loja = pv.idloja where nf.status in (1,2) and nf.idempresa = ? and nf.idempresa_loja = ?',
+																 'TRANSACIONAL'); 
+ALTER TABLE AFERIDOR.CONSULTAS ADD COLUMN SQL_DW VARCHAR(1000) NOT NULL DEFAULT '';																 
+ALTER TABLE AFERIDOR.CONSULTAS ADD COLUMN NOME_CAMPO_TRANS VARCHAR(50);
+ALTER TABLE AFERIDOR.CONSULTAS ADD COLUMN NOME_CAMPO_DW VARCHAR(50);																 
+
+
+SELECT * FROM AFERIDOR.CUBO
+
+CREATE TABLE AFERIDOR.CAMPOS_FILTRO(
+		ID INTEGER NOT NULL PRIMARY KEY,
+		NOME VARCHAR(50) NOT NULL
+	);	
+
+INSERT AFERIDOR.CAMPOS_FILTRO(ID,NOME,ID_CONSULTA) VALUES(1,"")	
+
+CREATE TABLE AFERIDOR.CUBO(
+		ID INTEGER NOT NULL PRIMARY KEY,
+		NOME VARCHAR(50) NOT NULL			
+);	
+ALTER TABLE AFERIDOR.DIMENSAO ADD COLUMN NOME_TABELA VARCHAR(50) NOT NULL DEFAULT '';
+--ALTER TABLE AFERIDOR.CAMPOS_FILTRO ADD FOREIGN KEY(ID_CONSULTA) REFERENCES AFERIDOR.CONSULTAS(ID);
+
+ALTER TABLE AFERIDOR.CAMPOS_FILTRO ADD COLUMN ID_CONSULTA INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE AFERIDOR.CAMPOS_FILTRO ADD FOREIGN KEY(ID_CONSULTA) REFERENCES AFERIDOR.CONSULTAS(ID);
+
+INSERT INTO AFERIDOR.CUBO(ID,NOME) VALUES(1, 'ESTATISTICAS VENDEDOR');
+
+SELECT * FROM AFERIDOR.CUBO
+
+
+UPDATE AFERIDOR.CONSULTAS SET SQL_DW = 'select sum(fev.valor_comissao_venda) from estatisticas.ft_estatistica_vendedor fev inner join estatisticas.dim_vendedor dv on dv.sk_vendedor = fev.sk_vendedor where sk_origem = 5' WHERE ID = 2

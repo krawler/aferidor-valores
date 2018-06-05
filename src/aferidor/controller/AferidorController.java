@@ -3,11 +3,21 @@ package aferidor.controller;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 
+import aferidor.dao.ConsultaDao;
+import aferidor.dao.Dao;
+import aferidor.dao.DimensaoDao;
+import aferidor.model.Consulta;
+import aferidor.model.Dimensao;
+import factory.ConexaoPostgre;
+import factory.IConnectionFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -46,10 +56,11 @@ public class AferidorController implements Initializable {
 	private Label lblMsgMaisUmaData;
 	@FXML
 	private Button btnConsultaValores;
+	@FXML
+	private Button btnLimpar;
+	private Dao consultaDao;
+	private Dao dimensaoDao;
 	
-	public static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
-	public static final String JDBC_URL = "jdbc:derby:C:\\Users\\Rafael.Ramos\\Documents\\workspace-sts-3.9.1.RELEASE\\aferidor-valores\\db\\consultas;create=true";
-	Connection conn = null;
 
 	@Override
 	public void initialize(URL url, ResourceBundle bundle) {
@@ -57,18 +68,20 @@ public class AferidorController implements Initializable {
 		lblMsgMaisUmaData.setVisible(false);
 		cmbMaisUmaData.setVisible(false);
 		dtpDataInicialConsulta.requestFocus();
+		consultaDao = new ConsultaDao();
+		dimensaoDao = new DimensaoDao();
 		
 		initListeners();		
+		initcombos();				
+	}
+	
+	private void initcombos() {		
 		
-		try {
-			Class.forName(DRIVER);
-			conn = DriverManager.getConnection(JDBC_URL);
-			
-		} catch (SQLException e) {			 
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {		
-			e.printStackTrace();
-		}
+		ObservableList<String> items = FXCollections.observableArrayList(consultaDao.listarNomesCombo());
+		cmbConsultaTransacional.setItems(items);		
+		items = FXCollections.observableArrayList(dimensaoDao.listarNomesCombo());
+		cmbCuboDataWareHouse.setItems(items);
+		
 		
 	}
 	
@@ -76,23 +89,35 @@ public class AferidorController implements Initializable {
 		btnConsultaValores.setOnAction(new EventHandler<ActionEvent>() {			
 			@Override
 			public void handle(ActionEvent arg0) {
-				testaConexaoBanco();			
+				consultaDao.obterTodos();			
 			}
 			
 		});
+		
+		btnLimpar.setOnAction(new EventHandler<ActionEvent>() {			
+			@Override
+			public void handle(ActionEvent arg0) {
+				limpaTela();	
+			}
+			
+		});
+		
+		cmbDimensaoFiltro.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {				 
+				System.out.println(cmbDimensaoFiltro.getValue());
+			}
+		});
 	}
 	
-	private void testaConexaoBanco() {		
-		
-		try {
-			Statement stmt = conn.createStatement();
-			ResultSet results = stmt.executeQuery("select * from AFERIDOR.CONSULTAS");
-			
-		} catch (SQLException e) {			
-			e.printStackTrace();
-		}
-		
-		
+	private void limpaTela() {
+		cmbConsultaTransacional.setPromptText("");
+		cmbCuboDataWareHouse.setPromptText("");
+		cmbDimensaoFiltro.setPromptText("");
+		dtpDataInicialConsulta.setPromptText("");
+		dtpDataFinalConsulta.setPromptText("");
+		cmbCampoConsulta.setPromptText("");
 	}
+	
 
 }

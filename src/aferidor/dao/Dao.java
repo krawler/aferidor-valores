@@ -2,7 +2,7 @@ package aferidor.dao;
 
 import java.util.List;
 
-interface Dao<T> {
+public interface Dao<T> {
 	
 	public T salvar();
 	
@@ -14,5 +14,6 @@ interface Dao<T> {
 	
 	public List<T> obterTodos(); 
 	
+	public List<String> listarNomesCombo();
 
 }

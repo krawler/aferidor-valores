@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pnMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="536.0" prefWidth="751.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aferidor.controller.AferidorController">
+   <children>
+      <TextField id="txValorFiltro" fx:id="txCampofiltro" layoutX="44.0" layoutY="327.0" prefHeight="25.0" prefWidth="272.0" />
+      <Button layoutX="329.0" layoutY="325.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="142.0" text="Adicionar campo">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <TableView layoutX="43.0" layoutY="367.0" prefHeight="148.0" prefWidth="652.0">
+         <columns>
+            <TableColumn fx:id="tbcCampoDimensao" prefWidth="225.0" text="Campo / Dimensão" />
+            <TableColumn fx:id="tbcValorFiltro" prefWidth="401.0" text="Valor" />
+         </columns>
+      </TableView>
+      <Button fx:id="btnConsultaValores" layoutX="523.0" layoutY="293.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="174.0" text="Salvar consulta">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+      <Label layoutX="43.0" layoutY="307.0" text="Campo">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField id="txValorFiltro" fx:id="txCampofiltro1" layoutX="45.0" layoutY="31.0" prefHeight="112.0" prefWidth="652.0" />
+      <Label layoutX="47.0" layoutY="14.0" text="SQL no transacional">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="47.0" layoutY="157.0" text="SQL no Data Warehouse">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <TextField id="txValorFiltro" fx:id="txCampofiltro11" layoutX="45.0" layoutY="174.0" prefHeight="112.0" prefWidth="652.0" />
+   </children>
+</AnchorPane>

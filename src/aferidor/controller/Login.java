@@ -34,9 +34,7 @@ public class Login extends Application {
 	public void start(Stage stage) throws Exception {		
 		initComponents();
 		initListeners();
-		stage.setTitle("Login - Aferidor");		
-		//pane.setStyle("-fx-background-color: linear-gradiente(from 0% 0% to 100% 100%, blue 0%, silver 100%);");		
-		//pane.getChildren().addAll(txLogin, txSenha, btEntrar, btSair);		
+		stage.setTitle("Login - Aferidor");			
 		initGridPane();
 		Scene scene = new Scene(pane);
 		stage.setScene(scene);
@@ -87,7 +85,7 @@ public class Login extends Application {
 	public void handle(KeyEvent e) {
 		String type = e.getEventType().getName();
 		KeyCode keycode = e.getCode();
-		System.out.println(type + " key code: " + keycode.getName());
+	//	System.out.println(type + " key code: " + keycode.getName());
 		
 		if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {					 
 		    e.consume();
