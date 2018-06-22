@@ -85,7 +85,6 @@ public class Login extends Application {
 	public void handle(KeyEvent e) {
 		String type = e.getEventType().getName();
 		KeyCode keycode = e.getCode();
-	//	System.out.println(type + " key code: " + keycode.getName());
 		
 		if(e.getEventType() == KeyEvent.KEY_PRESSED && e.getCode() == KeyCode.ENTER) {					 
 		    e.consume();

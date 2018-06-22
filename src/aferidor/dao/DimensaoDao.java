@@ -1,5 +1,6 @@
 package aferidor.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -67,6 +68,37 @@ public class DimensaoDao implements Dao<Dimensao> {
 	    ArrayList<Dimensao> dimensoes = new ArrayList<Dimensao>();	    
 	    ArrayList<String> nomes = new ArrayList<String>();
 	    for (Dimensao dimensao : dimensoes) {
+	    	 nomes.add(dimensao.getNome());
+		}	    
+		return nomes;
+	}
+
+	@Override
+	public List<String> listarNomesComboByFilterField(String campo, Integer id) {
+		
+		ArrayList<Dimensao> listDimensoes = new ArrayList<Dimensao>();
+		
+		try {			
+			PreparedStatement pstmt = con.criarConexao().prepareStatement("SELECT * FROM AFERIDOR.DIMENSAO WHERE "+ campo +" = ?");
+			//pstmt.setString(1, campo);
+			pstmt.setInt(1, id);
+			ResultSet results = pstmt.executeQuery();
+			
+			while(results.next()) {
+				Dimensao consulta = new Dimensao(Integer.valueOf(results.getInt("ID")), 
+												 results.getString("NOME"), 
+												 results.getString("NOME_TABELA"));
+				listDimensoes.add(consulta);
+			}
+			
+		} catch (SQLException e) {			
+			e.printStackTrace();
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}		
+			    
+	    ArrayList<String> nomes = new ArrayList<String>();
+	    for (Dimensao dimensao : listDimensoes) {
 	    	 nomes.add(dimensao.getNome());
 		}	    
 		return nomes;

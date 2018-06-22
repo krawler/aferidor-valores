@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class AferidorApplication extends Application {
+	
 
 	@Override
 	public void start(Stage stage) throws Exception {

@@ -2,6 +2,8 @@ package aferidor.dao;
 
 import java.util.List;
 
+import javafx.util.Callback;
+
 public interface Dao<T> {
 	
 	public T salvar();
@@ -15,5 +17,7 @@ public interface Dao<T> {
 	public List<T> obterTodos(); 
 	
 	public List<String> listarNomesCombo();
+
+	public List<String> listarNomesComboByFilterField(String campo, Integer id);
 
 }

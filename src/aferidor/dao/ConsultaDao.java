@@ -49,7 +49,9 @@ public class ConsultaDao implements Dao<Consulta> {
 			while(results.next()) {
 				Consulta consulta = new Consulta(Integer.valueOf(results.getInt("ID")), 
 												 results.getString("SQL_CONSULTA"), 
-												 results.getString("TIPO_CONSULTA"));
+												 results.getString("TIPO_CONSULTA"),
+												 results.getString("SQL_DW"),
+												 results.getString("NOME"));
 				listConsultas.add(consulta);
 			}
 			
@@ -67,9 +69,15 @@ public class ConsultaDao implements Dao<Consulta> {
 		ArrayList<String> nomes = new ArrayList<String>();
 		consultas = (ArrayList<Consulta>) this.obterTodos();
 		for (Consulta c: consultas) {
-			nomes.add(c.getSqlConsulta().substring(0, 25) + " - " + c.getTipo());
+			nomes.add(c.getNome());
 		}		
 		return nomes;
+	}
+
+	@Override
+	public List<String> listarNomesComboByFilterField(String campo, Integer id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
