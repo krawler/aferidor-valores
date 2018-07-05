@@ -31,7 +31,7 @@ public class DWDao {
 	
 	public String[] resultConsultaDW(String consulta, String[] params) throws Exception {
 		IConnectionFactory conn = new ConexaoPostgre();
-		String[] results = new String[2];
+		String[] results = new String[3];
 		try {
 			PreparedStatement stmt = conn.criarConexao().prepareStatement(consulta);
 			if(params != null) {
@@ -39,12 +39,10 @@ public class DWDao {
 					stmt.setString(i, params[i]);
 				}	
 			}					
-			ResultSet resultSet = stmt.executeQuery();
-			int i = 1;
-			while(resultSet.next()) {
-				results[i] = resultSet.getString(i);
-				i++;
-			}			
+			ResultSet resultSet = stmt.executeQuery();		
+			resultSet.next();
+			results[0] = resultSet.getString(1);
+			results[1] = resultSet.getString(2);					
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

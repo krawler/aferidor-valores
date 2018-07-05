@@ -19,6 +19,7 @@ import aferidor.dao.CuboDao;
 import aferidor.dao.DWDao;
 import aferidor.dao.Dao;
 import aferidor.dao.DimensaoDao;
+import aferidor.dao.TransacionalDao;
 import aferidor.model.Consulta;
 import aferidor.model.Cubo;
 import aferidor.model.Dimensao;
@@ -84,6 +85,7 @@ public class AferidorController implements Initializable {
 	private Dao dimensaoDao;
 	private Dao cuboDao;
 	private DWDao dWDao;
+	private TransacionalDao transacionalDao;
 	private URL url;
 	private ResourceBundle bundle;
 	private Map<String, Consulta> mapConsultas = new HashMap<String, Consulta>();
@@ -100,6 +102,7 @@ public class AferidorController implements Initializable {
 		dimensaoDao = new DimensaoDao();
 		cuboDao = new CuboDao();
 		dWDao = new DWDao();
+		transacionalDao = new TransacionalDao();
 		
 		initListeners();		
 		initcombos();
@@ -117,8 +120,7 @@ public class AferidorController implements Initializable {
 		}
 	}
 
-	private void initcombos() {		
-		
+	private void initcombos() {
 		ObservableList<String> items = FXCollections.observableArrayList(consultaDao.listarNomesCombo());
 		cmbConsultaTransacional.setItems(items);		
 		items = FXCollections.observableArrayList(dimensaoDao.listarNomesCombo());
@@ -173,22 +175,39 @@ public class AferidorController implements Initializable {
 		
 		btnConsultaValores.setOnAction(new EventHandler() {
 			@Override
-			public void handle(Event arg0) {
-				String consultaDW = mapConsultas.get(cmbConsultaTransacional.getValue()).getSqlDW();
+			public void handle(Event arg0) {				
 				try {
-					String[] resultsConsultaDW = dWDao.resultConsultaDW(consultaDW, null);
-					String strValorTotalDW = resultsConsultaDW[1];
-					String strTotalRegistrosDW = resultsConsultaDW[2];
-					valorTotalDW.parseDouble(strValorTotalDW);
-					totalRegistrosDW.parseInt(strTotalRegistrosDW);
-					lblTotalValorDW.setText("Total R$:" + strValorTotalDW);
-					lblTotalRegistrosDW.setText(strTotalRegistrosDW);
+					consultaRetornaValores();
 				} catch (Exception e) {					
 					e.printStackTrace();
 				}
 			}			
 		});
 					
+	}
+	
+	private void consultaRetornaValores() {
+		String consultaDW = mapConsultas.get(cmbConsultaTransacional.getValue()).getSqlDW();
+		String[] resultsConsultaDW = null;
+		String consultaTrans = mapConsultas.get(cmbConsultaTransacional.getValue()).getSqlConsulta();
+		String[] resultsConsultaTrans = null;
+		try {
+			resultsConsultaDW = dWDao.resultConsultaDW(consultaDW, null);
+			resultsConsultaTrans = transacionalDao.resultConsultaTransacional(consultaTrans, null);
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+		String strValorTotalDW = resultsConsultaDW[0];
+		String strTotalRegistrosDW = resultsConsultaDW[1];
+		totalRegistrosDW.parseInt(strTotalRegistrosDW);
+		valorTotalDW.parseDouble(strValorTotalDW);
+		lblTotalValorDW.setText("Total R$:" + strValorTotalDW);
+		lblTotalRegistrosDW.setText("Total registros: " + strTotalRegistrosDW);
+		
+		String strValorTotalTrans = resultsConsultaTrans[0];
+		String strTotalRegistrosTrans = resultsConsultaTrans[1];		
+		lblTotalValorTrans.setText("Total R$: " + strValorTotalTrans);
+		lblTotalRegistrosTrans.setText("Total registros: " + strTotalRegistrosTrans);
 	}
 	
 	@FXML

@@ -22,11 +22,10 @@ public class TransacionalDao {
 				}	
 			}					
 			ResultSet resultSet = stmt.executeQuery();
-			int i = 1;
-			while(resultSet.next()) {
-				results[i] = resultSet.getString(i);
-				i++;
-			}			
+			resultSet.next();
+			results[0] = resultSet.getString(1);
+			results[1] = resultSet.getString(2);	
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
