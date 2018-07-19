@@ -8,18 +8,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import aferidor.dao.CampoFiltroDao;
 import aferidor.dao.ConsultaDao;
 import aferidor.dao.CuboDao;
 import aferidor.dao.DWDao;
 import aferidor.dao.Dao;
 import aferidor.dao.DimensaoDao;
 import aferidor.dao.TransacionalDao;
+import aferidor.model.CampoFiltro;
 import aferidor.model.Consulta;
 import aferidor.model.Cubo;
 import aferidor.model.Dimensao;
@@ -43,6 +46,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class AferidorController implements Initializable {
@@ -60,11 +64,11 @@ public class AferidorController implements Initializable {
 	@FXML
 	private ComboBox<String> cmbCampoConsulta;
 	@FXML
-	private TableView<String> tbvFiltros;
+	private TableView<CampoFiltro> tbvFiltros;
 	@FXML
-	private TableColumn<String, String> tbcCampoDimensao;
+	private TableColumn<CampoFiltro, String> tbcCampoDimensao;
 	@FXML
-	private TableColumn<String, String> tbcValorFiltro;	
+	private TableColumn<CampoFiltro, Double> tbcValorFiltro;	
 	@FXML
 	private Button btnConsultaValores;
 	@FXML
@@ -80,22 +84,27 @@ public class AferidorController implements Initializable {
 	@FXML
 	private Label lblTotalValorDW;
 	@FXML
-	private Label lblTotalRegistrosDW;	
+	private Label lblTotalRegistrosDW;
+	@FXML
+	private Label lblDiferenca;
 	private Dao consultaDao;
 	private Dao dimensaoDao;
 	private Dao cuboDao;
 	private DWDao dWDao;
 	private TransacionalDao transacionalDao;
+	private Dao campoFiltroDao;
 	private URL url;
 	private ResourceBundle bundle;
 	private Map<String, Consulta> mapConsultas = new HashMap<String, Consulta>();
 	private Double valorTotalDW;
 	private Integer totalRegistrosDW;
+	private Double valorTotalTrans;
+	private Integer totalRegistrosTrans;
+	private List<CampoFiltro> itemsToBeAddToTableView;
 	
-
 	@Override
 	@FXML
-	public void initialize(URL url, ResourceBundle bundle) {		
+	public void initialize(URL url, ResourceBundle bundle) {
 				
 		dtpDataInicialConsulta.requestFocus();
 		consultaDao = new ConsultaDao();
@@ -103,14 +112,18 @@ public class AferidorController implements Initializable {
 		cuboDao = new CuboDao();
 		dWDao = new DWDao();
 		transacionalDao = new TransacionalDao();
+		campoFiltroDao = new CampoFiltroDao();
+		tbvFiltros = new TableView<CampoFiltro>();
 		
 		initListeners();		
 		initcombos();
 		initMaps();
 		
 		this.url = url;
-		this.bundle = bundle;		
+		this.bundle = bundle;
 		
+		tbcCampoDimensao.setCellValueFactory(new PropertyValueFactory<CampoFiltro, String>("nome"));		
+		tbvFiltros.getItems().setAll(getItemsToBeAddToTableView());
 	}
 	
 	private void initMaps() {		
@@ -183,6 +196,13 @@ public class AferidorController implements Initializable {
 				}
 			}			
 		});
+		
+		cmbDimensao.setOnAction(new EventHandler() {
+			@Override
+			public void handle(Event arg0) {
+				carregaCamposDimensao();
+			}
+		});
 					
 	}
 	
@@ -200,14 +220,21 @@ public class AferidorController implements Initializable {
 		String strValorTotalDW = resultsConsultaDW[0];
 		String strTotalRegistrosDW = resultsConsultaDW[1];
 		totalRegistrosDW.parseInt(strTotalRegistrosDW);
-		valorTotalDW.parseDouble(strValorTotalDW);
+		valorTotalDW = Double.valueOf(strValorTotalDW);
 		lblTotalValorDW.setText("Total R$:" + strValorTotalDW);
 		lblTotalRegistrosDW.setText("Total registros: " + strTotalRegistrosDW);
 		
 		String strValorTotalTrans = resultsConsultaTrans[0];
-		String strTotalRegistrosTrans = resultsConsultaTrans[1];		
+		String strTotalRegistrosTrans = resultsConsultaTrans[1];
+		totalRegistrosTrans.parseInt(strTotalRegistrosTrans);
+		valorTotalTrans = Double.valueOf(strValorTotalTrans);		
 		lblTotalValorTrans.setText("Total R$: " + strValorTotalTrans);
 		lblTotalRegistrosTrans.setText("Total registros: " + strTotalRegistrosTrans);
+		
+		Double diferencaValor = 0.0;
+		diferencaValor = valorTotalTrans - valorTotalDW;
+		DecimalFormat df = new DecimalFormat("0.00");		
+		lblDiferenca.setText("R$" + df.format(diferencaValor));		
 	}
 	
 	@FXML
@@ -223,6 +250,18 @@ public class AferidorController implements Initializable {
 		cmbDimensao.setItems(items);
 	}
 	
+	@FXML
+	private void carregaCamposDimensao() {
+		Map<String, Integer> mapRowDimensao = new HashMap<String,Integer>();
+		List<Dimensao> dimensoes = dimensaoDao.obterTodos();
+		for (Dimensao dimensao : dimensoes) {
+			mapRowDimensao.put(dimensao.getNome(), dimensao.getId());
+		}
+		ObservableList<String> items = FXCollections
+										.observableArrayList(campoFiltroDao
+												.listarNomesComboByFilterField("ID_DIMENSAO", mapRowDimensao.get(cmbDimensao.getValue())));
+		cmbCampoConsulta.setItems(items);
+	}
 	
 	private void limpaTela() {
 		cmbConsultaTransacional.setPromptText("");
@@ -232,6 +271,10 @@ public class AferidorController implements Initializable {
 		dtpDataFinalConsulta.setPromptText("");
 		cmbCampoConsulta.setPromptText("");
 	}
-	
+
+	public List<CampoFiltro> getItemsToBeAddToTableView() {
+		itemsToBeAddToTableView = campoFiltroDao.obterTodos();
+		return itemsToBeAddToTableView;
+	}	
 
 }

@@ -79,8 +79,7 @@ public class DimensaoDao implements Dao<Dimensao> {
 		ArrayList<Dimensao> listDimensoes = new ArrayList<Dimensao>();
 		
 		try {			
-			PreparedStatement pstmt = con.criarConexao().prepareStatement("SELECT * FROM AFERIDOR.DIMENSAO WHERE "+ campo +" = ?");
-			//pstmt.setString(1, campo);
+			PreparedStatement pstmt = con.criarConexao().prepareStatement("SELECT * FROM AFERIDOR.DIMENSAO WHERE "+ campo +" = ?");			
 			pstmt.setInt(1, id);
 			ResultSet results = pstmt.executeQuery();
 			

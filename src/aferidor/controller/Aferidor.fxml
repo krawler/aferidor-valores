@@ -15,43 +15,43 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Label layoutX="54.0" layoutY="234.0" text="Informe o período das informações ">
+      <Label layoutX="155.0" layoutY="230.0" text="Informe o período das informações ">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <DatePicker id="dpDataInicial" fx:id="dtpDataInicialConsulta" layoutX="55.0" layoutY="253.0" />
-      <Label layoutX="277.0" layoutY="259.0" prefHeight="19.0" prefWidth="22.0" text="até">
+      <DatePicker id="dpDataInicial" fx:id="dtpDataInicialConsulta" layoutX="154.0" layoutY="249.0" prefHeight="31.0" prefWidth="185.0" />
+      <Label layoutX="347.0" layoutY="258.0" prefHeight="19.0" prefWidth="22.0" text="até">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <DatePicker id="dpDataFinal" fx:id="dtpDataFinalConsulta" layoutX="306.0" layoutY="253.0" />
+      <DatePicker id="dpDataFinal" fx:id="dtpDataFinalConsulta" layoutX="375.0" layoutY="250.0" prefHeight="31.0" prefWidth="185.0" />
       <Label layoutX="50.0" layoutY="146.0" text="Filtros:">
          <font>
             <Font name="Arial Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="288.0" layoutY="29.0" text="Dimensão">
+      <Label layoutX="49.0" layoutY="169.0" text="Dimensão">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <ComboBox id="cmbDimensaoFiltro" fx:id="cmbDimensao" layoutX="288.0" layoutY="48.0" prefHeight="25.0" prefWidth="214.0" />
-      <TextField id="txValorFiltro" layoutX="376.0" layoutY="191.0" prefHeight="25.0" prefWidth="308.0" />
-      <Label layoutX="380.0" layoutY="173.0" text="Valor">
+      <ComboBox id="cmbDimensaoFiltro" fx:id="cmbDimensao" layoutX="49.0" layoutY="188.0" prefHeight="31.0" prefWidth="197.0" />
+      <TextField id="txValorFiltro" layoutX="465.0" layoutY="188.0" prefHeight="31.0" prefWidth="218.0" />
+      <Label layoutX="465.0" layoutY="170.0" text="Valor a ser pesquisado">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="553.0" layoutY="249.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="127.0" text="Adicionar filtro">
+      <Button layoutX="572.0" layoutY="251.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="108.0" text="Adicionar filtro">
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Button>
-      <TableView layoutX="53.0" layoutY="291.0" prefHeight="148.0" prefWidth="627.0">
+      <TableView fx:id="tbvFiltros" layoutX="53.0" layoutY="291.0" prefHeight="148.0" prefWidth="627.0">
         <columns>
-          <TableColumn fx:id="tbcCampoDimensao" prefWidth="225.0" text="Campo / Dimensão" />
-          <TableColumn fx:id="tbcValorFiltro" prefWidth="401.0" text="Valor" />
+          <TableColumn fx:id="tbcCampoDimensao" prefWidth="285.0" text="Campo / Dimensão" />
+          <TableColumn fx:id="tbcValorFiltro" prefWidth="341.0" text="Valor" />
         </columns>
       </TableView>
       <Button fx:id="btnConsultaValores" layoutX="53.0" layoutY="450.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="174.0" text="Consultar valores">
@@ -63,8 +63,8 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <ComboBox id="cmbDimensaoFiltro" fx:id="cmbCampoConsulta" layoutX="51.0" layoutY="190.0" prefHeight="25.0" prefWidth="183.0" />
-      <Label layoutX="51.0" layoutY="171.0" text="Campo">
+      <ComboBox id="cmbDimensaoFiltro" fx:id="cmbCampoConsulta" layoutX="268.0" layoutY="188.0" prefHeight="31.0" prefWidth="174.0" />
+      <Label layoutX="268.0" layoutY="169.0" text="Campo">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -74,35 +74,55 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Button>
-      <Label fx:id="lblTotalValorTrans" layoutX="52.0" layoutY="492.0" text="Total R$:" textFill="#1f56ae">
+      <Label fx:id="lblTotalValorTrans" layoutX="53.0" layoutY="522.0" text="Total R$:" textFill="#1f56ae">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblTotalRegistrosTrans" layoutX="51.0" layoutY="520.0" text="Total registros:" textFill="#1f56ae">
+      <Label fx:id="lblTotalRegistrosTrans" layoutX="52.0" layoutY="550.0" text="Total registros:" textFill="#1f56ae">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblTotalRegistrosDW" layoutX="506.0" layoutY="523.0" text="Total registros:" textFill="#169d1f">
+      <Label fx:id="lblTotalRegistrosDW" layoutX="506.0" layoutY="548.0" text="Total registros:" textFill="#169d1f">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label fx:id="lblTotalValorDW" layoutX="507.0" layoutY="495.0" text="Total R$:" textFill="#169d1f">
+      <Label fx:id="lblTotalValorDW" layoutX="507.0" layoutY="521.0" text="Total R$:" textFill="#169d1f">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="btnCadastroConsulta" layoutX="522.0" layoutY="102.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="164.0" text="Cadastrar/Editar consulta">
+      <Button fx:id="btnCadastroConsulta" layoutX="522.0" layoutY="104.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="164.0" text="Cadastrar/Editar consulta">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <CheckBox fx:id="chkIsData" layoutX="258.0" layoutY="194.0" mnemonicParsing="false" text="Campo data">
+      <CheckBox fx:id="chkIsData" layoutX="50.0" layoutY="256.0" mnemonicParsing="false" text="Campo data">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </CheckBox>
+      <Label fx:id="lblTotalRegistrosDW1" layoutX="506.0" layoutY="492.0" text="No Data warehouse" textFill="#169d1f">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTotalRegistrosTrans1" layoutX="54.0" layoutY="494.0" text="No transacional:" textFill="#1f56ae">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="321.0" layoutY="471.0" text="Diferença:">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblDiferenca" layoutX="368.0" layoutY="513.0" prefHeight="16.0" prefWidth="15.0" textAlignment="RIGHT">
+         <font>
+            <Font name="Arial Bold" size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
